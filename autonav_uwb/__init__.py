@@ -59,6 +59,7 @@ class UWBTag:
         self._thread = None
         self._stop_event = threading.Event()
         self._thread_lock = threading.Lock()
+        self._running = False
 
         # Callbacks
         self._callbacks = { e: [] for e in self.Event }
