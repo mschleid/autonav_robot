@@ -1,0 +1,14 @@
+# created by virtualenv automatically
+bin
+lib
+pyvenv.cfg
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.key
+*.log
+*.private
+secrets.py
