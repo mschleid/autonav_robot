@@ -11,4 +11,7 @@ __pycache__
 *.key
 *.log
 *.private
-secrets.py
+an_secrets.py
+test.py
+share
+*old*
