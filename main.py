@@ -106,8 +106,6 @@ def init_uwb():
 
     print(anchors)
 
-    exit()
-    
     # setup numpy arrays
     global A_np
 
@@ -117,6 +115,8 @@ def init_uwb():
     for i in range(length_anchors):
         A_np[i,0] = anchors[i]['pos_x']
         A_np[i,1] = anchors[i]['pos_y']
+
+    print(A_np)
 
     A_np= A_np[1:,:]
 
