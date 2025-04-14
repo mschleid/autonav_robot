@@ -38,7 +38,7 @@ def uwb_calculate_coordinates():
 
     for a in a_tmp:
         distance = tag_distances_from_anchors[a['address']]
-        if distance <= 2000:
+        if (distance <= 2000 and distance >= 0):
             dists[i] = (distance-b)/m
             i+=1
 
