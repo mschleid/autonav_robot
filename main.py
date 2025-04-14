@@ -49,7 +49,6 @@ def uwb_calculate_coordinates():
     print(dists)
     print("Anchors:")
     print(a_tmp)
-    return
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
@@ -60,6 +59,7 @@ def uwb_calculate_coordinates():
         else:
             print("Shit!")
     
+    return
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists[1:]**2 + dists[0]**2)
 
