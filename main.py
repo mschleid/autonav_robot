@@ -45,12 +45,9 @@ tag_distances_from_anchors = {}
 def uwb_calculate_coordinates():
     global anchors
     global tag_distances_from_anchors
+    global A_np
 
     # Get X and Y positions of anchors
-    length = len(anchors)
-    print(length)
-    # print(anchors)
-    A = np.zeros([length,2])
     for ix in range(length):
         A[ix,0] = anchors[ix].pos_x
         A[ix,1] = anchors[ix].pos_y
@@ -77,7 +74,7 @@ def uwb_calculate_coordinates():
             print("Shit!")
     
     # Math Stuff
-    A = A[1:,:]
+    A_np= A[1:,:]
 
     y = 0.5*(A[:,0]**2 + A[:,1]**2 - dists[1:]**2 + dists[0]**2)
 
@@ -139,6 +136,17 @@ def init_uwb():
     # correct anchor positions by picking the first point as origin
     origin = anchors[0]
     offset_x, offset_y = (origin['pos_x'], origin['pos_y'])
+
+    # math stuff
+    global A_np
+    length_anchors = len(anchors)
+    A_np= np.zeros([length_anchors,2])
+
+    for a in anchors:
+        print(anchors[a]['pos_x'], anchors[a]['pos_y'])
+
+
+
     
     for anchor in anchors:
         anchor['pos_x'] -= offset_x
