@@ -9,33 +9,6 @@ from filterpy.common import Q_discrete_white_noise
 import math
 
 # -------- SECTION --------
-#      KALMAN FILTER
-# -------------------------
-f = KalmanFilter (dim_x=4, dim_z=2)
-xhat = np.array([5., 1., 5., 0.])    # velocity
-f.x = xhat
-dt = 0.5
-f.F = np.array([[1, dt, 0, 0],  # Position_x update
-                 [0, 1, 0, 0],  # Velocity_x update
-                 [0, 0, 1, dt],  # Position_y update
-                 [0, 0, 0, 1]])  # Velocity_y update
-f.H = np.array([[1.,0.,0.,0],[0.,0.,1.,0.]])
-f.P *= 1
-f.R = np.array([[1.,0.], [0.,1.]])
-
-
-# Generate 2D process noise covariance for each independent dimension
-var = 0.12
-Q_x = Q_discrete_white_noise(dim=2, dt=dt, var=var)  # For x
-Q_y = Q_discrete_white_noise(dim=2, dt=dt, var=var)  # For y
-
-# Construct block-diagonal matrix for full 4D system
-f.Q = np.block([
-    [Q_x, np.zeros_like(Q_x)],  # Top-left and top-right
-    [np.zeros_like(Q_y), Q_y]  # Bottom-left and bottom-right
-])
-
-# -------- SECTION --------
 #      UWB Tag/Anchor Communications
 # -------------------------
 uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
@@ -131,11 +104,15 @@ def init_uwb():
         anchor['pos_x'] -= offset_x
         anchor['pos_y'] -= offset_y
 
+    print(anchors)
+
+    exit()
+    
     # setup numpy arrays
     global A_np
 
     length_anchors = len(anchors)
-    A_np= np.zeros([length_anchors,2])
+    A_np = np.zeros([length_anchors,2])
 
     for i in range(length_anchors):
         A_np[i,0] = anchors[i]['pos_x']
