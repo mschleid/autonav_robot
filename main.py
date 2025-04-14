@@ -65,12 +65,12 @@ def uwb_calculate_coordinates():
 # Callback Functions
 def uwb_new_distance(*args, **kwargs):
     global tag_distances_from_anchors
-    print(f"new distance: {kwargs}")
+    # print(f"new distance: {kwargs}")
     print(kwargs)
-    tag_distances_from_anchors[kwargs['address']] = kwargs['distance']
-    print(tag_distances_from_anchors)
-    if len(tag_distances_from_anchors) >= 3:
-        uwb_calculate_coordinates()
+    # tag_distances_from_anchors[kwargs['address']] = kwargs['distance']
+    # print(tag_distances_from_anchors)
+    # if len(tag_distances_from_anchors) >= 3:
+    #     uwb_calculate_coordinates()
 
 def uwb_found_anchor(*args, **kwargs):
     print(f"found anchor: {args}")
