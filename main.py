@@ -142,11 +142,7 @@ def init_uwb():
     uwb_tag.on(uwb_tag.Event.DISTANCE, uwb_new_distance)
     uwb_tag.on(uwb_tag.Event.CONNECT, uwb_found_anchor)
     uwb_tag.on(uwb_tag.Event.DISCONNECT, uwb_lost_anchor)
-
-    # Start UWB tag
-    uwb_tag.start()
     
-
 if __name__ == "__main__":
     init_uwb()
 
