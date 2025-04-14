@@ -127,7 +127,7 @@ def init_uwb():
             except Exception as e:
                 print(f"Error parsing JSON: {e}")
 
-        print("Failed to fetch anchor locations... retrying in 3 seconds")
+        print("Failed to fetch anchor locations... retrying in 3 seconds", req.status_code, req.text)
         time.sleep(3)    
     
     # correct anchor positions by picking the first point as origin
