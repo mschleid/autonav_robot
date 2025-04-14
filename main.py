@@ -47,6 +47,9 @@ def uwb_calculate_coordinates():
     
     print("Distances to anchors:")
     print(dists)
+    print("Anchors:")
+    print(a_tmp)
+    return
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
