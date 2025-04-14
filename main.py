@@ -27,21 +27,24 @@ def uwb_calculate_coordinates():
         if a['address'] in tag_distances_from_anchors:
             a_tmp += [a]
 
-    print(a_tmp)
-
-    return
 
     # Get tag's distances to anchors from input
     i = 0
-    dists = np.zeros(len(a_tmp))
+    dists_tmp = []
     b = 42.36565
     m = 1.46323
+
 
     for a in a_tmp:
         distance = tag_distances_from_anchors[a['address']]
         if (distance <= 2000 and distance >= 0):
-            dists[i] = (distance-b)/m
+            dists_tmp[i] = (distance-b)/m
             i+=1
+
+
+    dists = np.zeros(len(dists_tmp))
+    for i in range(len(dists_tmp)):
+        dists[i] = dists_tmp[i]
 
     if i < 3:
         # print("Not enough anchors to calculate position")
