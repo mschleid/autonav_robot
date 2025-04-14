@@ -32,8 +32,14 @@ def uwb_calculate_coordinates():
     m = 1.46323
 
     for a in anchors:
-        dists[i] = (tag_distances_from_anchors[a['address']]-b)/m
-        i+=1
+        distance = tag_distances_from_anchors[a['address']]
+        if distance <= 1000:
+            dists[i] = (distance-b)/m
+            i+=1
+
+    if i < 3:
+        print("Not enough anchors to calculate position")
+        return
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
