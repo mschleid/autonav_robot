@@ -20,7 +20,6 @@ tag_distances_from_anchors = {}
 def uwb_calculate_coordinates():
     global anchors
     global tag_distances_from_anchors
-    global A_np
 
     a_tmp = []
 
