@@ -48,6 +48,7 @@ def uwb_calculate_coordinates():
 
     # Get X and Y positions of anchors
     length = len(anchors)
+    print(anchors)
     A = np.zeros([length,2])
     for ix in range(length):
         A[ix,0] = anchors[ix].pos_x
