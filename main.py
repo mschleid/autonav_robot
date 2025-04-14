@@ -41,13 +41,13 @@ def uwb_calculate_coordinates():
             i+=1
 
     if i < 3:
-        print("Not enough anchors to calculate position")
+        # print("Not enough anchors to calculate position")
         return
     
-    print("Distances to anchors:")
-    print(dists)
-    print("Anchors:")
-    print(a_tmp)
+    # print("Distances to anchors:")
+    # print(dists)
+    # print("Anchors:")
+    # print(a_tmp)
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
@@ -87,7 +87,7 @@ def uwb_new_distance(*args, **kwargs):
     if anchors is None:
         return
     # print(f"new distance: {kwargs}")
-    print(kwargs)
+    # print(kwargs)
     tag_distances_from_anchors[kwargs['address']] = kwargs['distance']
     # print(tag_distances_from_anchors)
     # if len(tag_distances_from_anchors) >= 3:
