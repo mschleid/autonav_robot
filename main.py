@@ -11,7 +11,7 @@ import math
 # -------- SECTION --------
 #      UWB Tag/Anchor Communications
 # -------------------------
-uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
+uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=True)
 anchors = []
 tag_distances_from_anchors = {}
 
@@ -115,7 +115,7 @@ def init_uwb():
         anchor['pos_x'] -= offset_x
         anchor['pos_y'] -= offset_y
 
-    print(anchors)
+    # print(anchors)
     return
 
     # setup numpy arrays
