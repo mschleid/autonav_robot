@@ -50,7 +50,7 @@ def uwb_calculate_coordinates():
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
-        height_sqrt = math.pow(anchors[n]['height'], 2)
+        height_sqrt = math.pow(a_tmp[n]['height'], 2)
 
         if dist_sqrt >= height_sqrt:
             dists[n] = math.sqrt( dist_sqrt - height_sqrt )
