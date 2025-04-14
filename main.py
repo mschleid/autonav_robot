@@ -16,7 +16,6 @@ tag_distances_from_anchors = {}
 # -------- SECTION --------
 #      UWB Math
 # -------------------------
-A_np = None
 
 def uwb_calculate_coordinates():
     global anchors
@@ -59,7 +58,16 @@ def uwb_calculate_coordinates():
         else:
             print("Shit!")
     
-    return
+    
+    length_anchors = len(a_tmp)
+    A_np = np.zeros([length_anchors,2])
+
+    for i in range(length_anchors):
+        A_np[i,0] = anchors[i]['pos_x']
+        A_np[i,1] = anchors[i]['pos_y']
+
+    A_np = A_np[1:,:]
+
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists[1:]**2 + dists[0]**2)
 
@@ -127,25 +135,6 @@ def init_uwb():
     for anchor in anchors:
         anchor['pos_x'] -= offset_x
         anchor['pos_y'] -= offset_y
-
-    # print(anchors)
-    return
-
-    # setup numpy arrays
-    global A_np
-
-    length_anchors = len(anchors)
-    A_np = np.zeros([length_anchors,2])
-
-    for i in range(length_anchors):
-        A_np[i,0] = anchors[i]['pos_x']
-        A_np[i,1] = anchors[i]['pos_y']
-
-    print(A_np)
-
-    A_np = A_np[1:,:]
-
-    print(A_np)
     
 if __name__ == "__main__":
     init_uwb()
