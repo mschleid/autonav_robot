@@ -142,11 +142,8 @@ def init_uwb():
     length_anchors = len(anchors)
     A_np= np.zeros([length_anchors,2])
 
-    for a in anchors:
-        print(anchors[a]['pos_x'], anchors[a]['pos_y'])
-
-
-
+    for i in range(length_anchors):
+        print(anchors[i])
     
     for anchor in anchors:
         anchor['pos_x'] -= offset_x
