@@ -52,21 +52,19 @@ def uwb_calculate_coordinates():
     global tag_distances_from_anchors
     global A_np
 
-    return
-
     # Get tag's distances to anchors from input
     i = 0
-    dists = np.zeros(length)
+    dists = np.zeros(len(anchors))
     b = 42.36565
     m = 1.46323
 
     for a in anchors:
-        dists[i] = (tag_distances_from_anchors[a.address]-b)/m
+        dists[i] = (tag_distances_from_anchors[a['address']]-b)/m
         i+=1
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
-        height_sqrt = math.pow(anchors[n].height, 2)
+        height_sqrt = math.pow(anchors[n]['height'], 2)
 
         if dist_sqrt >= height_sqrt:
             dists[n] = math.sqrt( dist_sqrt - height_sqrt )
@@ -74,17 +72,9 @@ def uwb_calculate_coordinates():
             print("Shit!")
     
     # Math Stuff
-    A_np= A[1:,:]
+    y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists[1:]**2 + dists[0]**2)
 
-    y = 0.5*(A[:,0]**2 + A[:,1]**2 - dists[1:]**2 + dists[0]**2)
-
-    xtemp = np.matmul(linalg.pinv(A),y)
-    f.predict()
-    f.update(xtemp)
-
-    # KALMAN FILTER OUTPUT
-    # xpos = f.x[0]
-    # ypos = f.x[2]
+    xtemp = np.matmul(linalg.pinv(A_np),y)
 
     # WITHOUT KALMAN
     xpos = xtemp[0]
@@ -150,6 +140,8 @@ def init_uwb():
     for i in range(length_anchors):
         A_np[i,0] = anchors[i]['pos_x']
         A_np[i,1] = anchors[i]['pos_y']
+
+    A_np= A_np[1:,:]
 
     print(A_np)
     
