@@ -42,15 +42,15 @@ uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
 anchors = []
 tag_distances_from_anchors = {}
 
+# -------- SECTION --------
+#      UWB Math
+# -------------------------
+A_np = None
+
 def uwb_calculate_coordinates():
     global anchors
     global tag_distances_from_anchors
     global A_np
-
-    # Get X and Y positions of anchors
-    for ix in range(length):
-        A[ix,0] = anchors[ix].pos_x
-        A[ix,1] = anchors[ix].pos_y
 
     return
 
@@ -136,18 +136,22 @@ def init_uwb():
     # correct anchor positions by picking the first point as origin
     origin = anchors[0]
     offset_x, offset_y = (origin['pos_x'], origin['pos_y'])
-
-    # math stuff
-    global A_np
-    length_anchors = len(anchors)
-    A_np= np.zeros([length_anchors,2])
-
-    for i in range(length_anchors):
-        print(anchors[i])
     
     for anchor in anchors:
         anchor['pos_x'] -= offset_x
         anchor['pos_y'] -= offset_y
+
+    # setup numpy arrays
+    global A_np
+
+    length_anchors = len(anchors)
+    A_np= np.zeros([length_anchors,2])
+
+    for i in range(length_anchors):
+        A_np[i,0] = anchors[i]['pos_x']
+        A_np[i,1] = anchors[i]['pos_y']
+
+    print(A_np)
     
     # Set callback functions
     uwb_tag.on(uwb_tag.Event.DISTANCE, uwb_new_distance)
