@@ -85,6 +85,11 @@ def init_uwb():
     global uwb_tag
     global anchors
 
+    # Set callback functions
+    uwb_tag.on(uwb_tag.Event.DISTANCE, uwb_new_distance)
+    uwb_tag.on(uwb_tag.Event.CONNECT, uwb_found_anchor)
+    uwb_tag.on(uwb_tag.Event.DISCONNECT, uwb_lost_anchor)
+
     # Fetch Anchor Locations from database
     json_response = None
     while True:
@@ -111,6 +116,7 @@ def init_uwb():
         anchor['pos_y'] -= offset_y
 
     print(anchors)
+    return
 
     # setup numpy arrays
     global A_np
@@ -127,11 +133,6 @@ def init_uwb():
     A_np = A_np[1:,:]
 
     print(A_np)
-    
-    # Set callback functions
-    uwb_tag.on(uwb_tag.Event.DISTANCE, uwb_new_distance)
-    uwb_tag.on(uwb_tag.Event.CONNECT, uwb_found_anchor)
-    uwb_tag.on(uwb_tag.Event.DISCONNECT, uwb_lost_anchor)
     
 if __name__ == "__main__":
     init_uwb()
