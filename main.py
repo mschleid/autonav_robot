@@ -23,12 +23,13 @@ def uwb_calculate_coordinates():
 
     a_tmp = []
 
-
-
-
     for a in anchors:
         if a['address'] in tag_distances_from_anchors:
             a_tmp += [a]
+
+    print(a_tmp)
+
+    return
 
     # Get tag's distances to anchors from input
     i = 0
