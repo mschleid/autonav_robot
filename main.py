@@ -48,11 +48,13 @@ def uwb_calculate_coordinates():
 
     # Get X and Y positions of anchors
     length = len(anchors)
-    print(anchors)
+    # print(anchors)
     A = np.zeros([length,2])
     for ix in range(length):
         A[ix,0] = anchors[ix].pos_x
         A[ix,1] = anchors[ix].pos_y
+
+    return
 
     # Get tag's distances to anchors from input
     i = 0
