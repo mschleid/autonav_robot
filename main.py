@@ -77,7 +77,7 @@ def uwb_calculate_coordinates():
     xpos = xtemp[0]
     ypos = xtemp[1]
 
-    print(f"({xpos:.2f}, {ypos:.2})")
+    print(f"({xpos:.02f}, {ypos:.02f})")
 
 
 # Callback Functions
