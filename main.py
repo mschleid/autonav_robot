@@ -141,6 +141,8 @@ def init_uwb():
     for anchor in anchors:
         anchor['pos_x'] -= offset_x
         anchor['pos_y'] -= offset_y
+
+    print(anchors)
     
 if __name__ == "__main__":
     init_uwb()
