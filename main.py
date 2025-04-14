@@ -41,6 +41,7 @@ def uwb_calculate_coordinates():
         print("Not enough anchors to calculate position")
         return
     
+    print("Distances to anchors:")
     print(dists)
 
     for n in range(0,i):
