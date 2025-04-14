@@ -40,6 +40,8 @@ def uwb_calculate_coordinates():
     if i < 3:
         print("Not enough anchors to calculate position")
         return
+    
+    print(dists)
 
     for n in range(0,i):
         dist_sqrt = math.pow(dists[n], 2)
