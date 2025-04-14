@@ -45,7 +45,7 @@ def uwb_calculate_coordinates():
         return
     
     # print("Distances to anchors:")
-    # print(dists)
+    print(dists)
     # print("Anchors:")
     # print(a_tmp)
 
@@ -77,7 +77,7 @@ def uwb_calculate_coordinates():
     xpos = xtemp[0]
     ypos = xtemp[1]
 
-    print(xpos, ypos)
+    print(f"({xpos:.2f}, {ypos:.2})")
 
 
 # Callback Functions
