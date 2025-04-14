@@ -4,14 +4,12 @@ import time
 import requests
 import numpy as np
 from numpy import linalg
-from filterpy.kalman import KalmanFilter
-from filterpy.common import Q_discrete_white_noise
 import math
 
 # -------- SECTION --------
 #      UWB Tag/Anchor Communications
 # -------------------------
-uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=True)
+uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
 anchors = []
 tag_distances_from_anchors = {}
 
