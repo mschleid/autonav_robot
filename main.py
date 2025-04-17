@@ -46,10 +46,15 @@ def uwb_calculate_coordinates():
         else:
             print("distance is less than height.  ABORT")
 
-    if len(dists) < 3:
-        return
-    
+    # sort distances
+    dists = np.sort(dists)
 
+    if len(dists) >= 4:
+        dists = dists[:4]
+    if len(dists) == 3:
+        dists = dists[:3]
+    else:
+        return
 
     A_np = np.zeros([len(a_dupe),2])
 
