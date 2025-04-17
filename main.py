@@ -33,20 +33,22 @@ def uwb_calculate_coordinates():
     dists_tmp = []
     b = 42.36565
     m = 1.46323
-
+    idx = []
     
-    for a in a_tmp:
+    for ix in range(len(a_tmp)):
+        a = a_tmp[ix]
         distance = tag_distances_from_anchors[a['address']]
         if (distance <= 2000 and distance >= 0):
             dists_tmp += [(distance-b)/m]
             i+=1
+            idx += [ix]
 
 
     dists = np.zeros(len(dists_tmp))
     for i in range(len(dists_tmp)):
         dists[i] = dists_tmp[i]
 
-    if i < 3:
+    if len(dists) < 3:
         # print("Not enough anchors to calculate position")
         return
     
@@ -65,19 +67,25 @@ def uwb_calculate_coordinates():
             print("Shit!")
     
     
-    length_anchors = len(a_tmp)
-    A_np = np.zeros([length_anchors,2])
+    A_np = np.zeros([len(idx),2])
+    ix = 0
 
-    for i in range(length_anchors):
-        A_np[i,0] = anchors[i]['pos_x']
-        A_np[i,1] = anchors[i]['pos_y']
+    for i in idx:
+        A_np[ix,0] = anchors[i]['pos_x']
+        A_np[ix,1] = anchors[i]['pos_y']
+        ix += 1
 
-    A_np = A_np[1:,:]
+
+    offset = A_np[0,:]
+    A_np = A_np[1:,:] 
+    A_np = A_np - offset
+    
 
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists[1:]**2 + dists[0]**2)
 
     xtemp = np.matmul(linalg.pinv(A_np),y)
+    xtemp += offset
 
     # WITHOUT KALMAN
     xpos = xtemp[0]
@@ -133,14 +141,6 @@ def init_uwb():
 
         print("Failed to fetch anchor locations... retrying in 3 seconds", req.status_code, req.text)
         time.sleep(3)    
-    
-    # correct anchor positions by picking the first point as origin
-    origin = anchors[0]
-    offset_x, offset_y = (origin['pos_x'], origin['pos_y'])
-    
-    for anchor in anchors:
-        anchor['pos_x'] -= offset_x
-        anchor['pos_y'] -= offset_y
 
     print(anchors)
     
