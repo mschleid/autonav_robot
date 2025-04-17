@@ -65,6 +65,7 @@ def uwb_calculate_coordinates():
             dists[n] = math.sqrt( dist_sqrt - height_sqrt )
         else:
             print("Shit!")
+            return
     
     
     A_np = np.zeros([len(idx),2])
