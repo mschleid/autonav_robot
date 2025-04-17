@@ -26,7 +26,7 @@ def uwb_calculate_coordinates():
     for a in anchors:
         if a['address'] in tag_distances_from_anchors:
             a_dupe += [a]
-    print(tag_distances_from_anchors)
+
     print(a_dupe)
 
     return
