@@ -21,11 +21,11 @@ def uwb_calculate_coordinates():
     global anchors
     global tag_distances_from_anchors
 
-    a_dupe = anchors.copy()
+    a_dupe = []
 
-    for a in a_dupe:
-        if a['address'] not in tag_distances_from_anchors:
-            a_dupe.remove(a)
+    for a in anchors:
+        if a['address'] in tag_distances_from_anchors:
+            a_dupe += [a]
     
     print(a_dupe)
 
