@@ -25,68 +25,37 @@ def uwb_calculate_coordinates():
 
     for a in anchors:
         if a['address'] in tag_distances_from_anchors:
-            a_dupe += [a]
-
-    print(a_dupe)
-
-    return
+            if tag_distances_from_anchors[a['address']] > 0 and tag_distances_from_anchors[a['address']] < 2000:
+                a_dupe += [a]
 
 
-    a_tmp = []
-
-    for a in anchors:
-        if a['address'] in tag_distances_from_anchors:
-            a_tmp += [a]
-
-
-    # Get tag's distances to anchors from input
-    i = 0
-    dists_tmp = []
+    dists = np.zeros(len(a_dupe))
     b = 42.36565
     m = 1.46323
-    idx = []
-    
-    for ix in range(len(a_tmp)):
-        a = a_tmp[ix]
-        distance = tag_distances_from_anchors[a['address']]
-        if (distance <= 2000 and distance >= 0):
-            dists_tmp += [(distance-b)/m]
-            i+=1
-            idx += [ix]
 
+    for i,a in enumerate(a_dupe):
+        this_dist = tag_distances_from_anchors[a['address']]
+        dists[i] = (this_dist-b)/m
 
-    dists = np.zeros(len(dists_tmp))
-    for i in range(len(dists_tmp)):
-        dists[i] = dists_tmp[i]
-
-    if len(dists) < 3:
-        # print("Not enough anchors to calculate position")
-        return
-    
-    # print("Distances to anchors:")
-    print(dists)
-    # print("Anchors:")
-    # print(a_tmp)
-
-    for n in range(0,i):
-        dist_sqrt = math.pow(dists[n], 2)
-        height_sqrt = math.pow(a_tmp[n]['height'], 2)
+        # Caluclate height offset
+        dist_sqrt = math.pow(dists[i], 2)
+        height_sqrt = math.pow(a['height'], 2)
 
         if dist_sqrt >= height_sqrt:
-            dists[n] = math.sqrt( dist_sqrt - height_sqrt )
+            dists[i] = math.sqrt( dist_sqrt - height_sqrt )
         else:
-            print("Shit!")
-            return
-    
-    
-    A_np = np.zeros([len(idx),2])
-    ix = 0
+            print("distance is less than height.  ABORT")
 
-    for i in idx:
-        A_np[ix,0] = anchors[i]['pos_x']
-        A_np[ix,1] = anchors[i]['pos_y']
-        ix += 1
+    if len(dists) < 3:
+        return
+    
 
+
+    A_np = np.zeros([len(a_dupe),2])
+
+    for i in range(len(a_dupe)):
+        A_np[i,0] = a_dupe[i]['pos_x']
+        A_np[i,1] = a_dupe[i]['pos_y']
 
     offset = A_np[0,:]
     A_np = A_np[1:,:] 
