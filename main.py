@@ -89,7 +89,6 @@ def uwb_calculate_coordinates():
     offset = A_np[0,:]
     A_np = A_np[1:,:] 
     A_np = A_np - offset
-
     
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists_np[1:]**2 + dists_np[0]**2)
@@ -103,6 +102,15 @@ def uwb_calculate_coordinates():
     ypos = xtemp[1]
 
     print(f"({xpos:.02f}, {ypos:.02f})")
+
+    # send request
+    url = API_BASE + "/position"
+    data = {
+        "address": "DD:DD:DD:DD:DD:DD",
+        "pos_x": xpos,
+        "pos_y": ypos
+    }
+    response = requests.post(url, json=data)
 
 
 # Callback Functions
