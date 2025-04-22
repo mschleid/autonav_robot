@@ -52,9 +52,13 @@ def uwb_calculate_coordinates():
         # Get anchor corresponding to address
         this_anchor = next((anchor for anchor in anchors if anchor['address'] == this_addr), None)
         print(this_anchor)
+        this_height = this_anchor['height']
+        print(f"height: {this_height}")
+
         if this_anchor is None:
             print(f"Anchor not found for address: {this_addr}")
             return
+        
         # Caluclate height offset
         dist_sqrt = math.pow(this_dist, 2)
         height_sqrt = math.pow(this_anchor['height'], 2)
