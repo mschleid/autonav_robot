@@ -98,10 +98,10 @@ def uwb_calculate_coordinates():
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists_np[1:]**2 + dists_np[0]**2)
 
-    print("I made it here")
 
     xtemp = np.matmul(linalg.pinv(A_np),y)
     xtemp += offset
+    print("I made it here")
 
     # WITHOUT KALMAN
     xpos = xtemp[0]
