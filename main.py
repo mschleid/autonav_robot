@@ -80,7 +80,7 @@ def uwb_calculate_coordinates():
     print(distances)
 
     A_np = np.zeros([len(a_dupe),2])
-    dists_np = np.zeros([len(distances),1])
+    dists_np = np.zeros(len(distances))
 
     for i in range(len(distances)):
         dists_np[i] = distances[i]
