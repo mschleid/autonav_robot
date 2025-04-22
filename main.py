@@ -9,7 +9,7 @@ import math
 # -------- SECTION --------
 #      UWB Tag/Anchor Communications
 # -------------------------
-uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=True)
+uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
 anchors = []
 tag_distances_from_anchors = {}
 
@@ -51,9 +51,7 @@ def uwb_calculate_coordinates():
 
         # Get anchor corresponding to address
         this_anchor = next((anchor for anchor in anchors if anchor['address'] == this_addr), None)
-        print(this_anchor)
         this_height = this_anchor['height']
-        print(f"height: {this_height}")
 
         if this_anchor is None:
             print(f"Anchor not found for address: {this_addr}")
@@ -77,7 +75,6 @@ def uwb_calculate_coordinates():
     else:
         return
     
-    print(distances)
 
     A_np = np.zeros([len(a_dupe),2])
     dists_np = np.zeros(len(distances))
@@ -93,7 +90,6 @@ def uwb_calculate_coordinates():
     A_np = A_np[1:,:] 
     A_np = A_np - offset
 
-    print(A_np)
     
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists_np[1:]**2 + dists_np[0]**2)
@@ -105,11 +101,6 @@ def uwb_calculate_coordinates():
     # WITHOUT KALMAN
     xpos = xtemp[0]
     ypos = xtemp[1]
-
-    print(type(xpos))
-    print(type(ypos))
-    print(xpos)
-    print(ypos)
 
     print(f"({xpos:.02f}, {ypos:.02f})")
 
