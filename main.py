@@ -101,11 +101,15 @@ def uwb_calculate_coordinates():
 
     xtemp = np.matmul(linalg.pinv(A_np),y)
     xtemp += offset
-    print("I made it here")
 
     # WITHOUT KALMAN
     xpos = xtemp[0]
     ypos = xtemp[1]
+
+    print(type(xpos))
+    print(type(ypos))
+    print(xpos)
+    print(ypos)
 
     print(f"({xpos:.02f}, {ypos:.02f})")
 
