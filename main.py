@@ -75,9 +75,7 @@ def uwb_calculate_coordinates():
     # else:
     #     return
 
-    if len(distances) >= 3:
-        distances = distances[:3]
-    else:
+    if len(distances) < 3:
         return
     
 
