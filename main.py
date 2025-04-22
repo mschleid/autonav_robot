@@ -76,6 +76,8 @@ def uwb_calculate_coordinates():
         distances = distances[:3]
     else:
         return
+    
+    print(distances)
 
     A_np = np.zeros([len(a_dupe),2])
 
@@ -86,6 +88,8 @@ def uwb_calculate_coordinates():
     offset = A_np[0,:]
     A_np = A_np[1:,:] 
     A_np = A_np - offset
+
+    print(A_np)
     
     # Math Stuff
     y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - distances[1:]**2 + distances[0]**2)
