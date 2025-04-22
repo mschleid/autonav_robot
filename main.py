@@ -68,9 +68,14 @@ def uwb_calculate_coordinates():
             print("distance is less than height.  ABORT")
 
 
-    if len(distances) >= 4:
-        distances = distances[:4]
-    if len(distances) == 3:
+    # if len(distances) >= 4:
+    #     distances = distances[:4]
+    # elif len(distances) == 3:
+    #     distances = distances[:3]
+    # else:
+    #     return
+
+    if len(distances) >= 3:
         distances = distances[:3]
     else:
         return
