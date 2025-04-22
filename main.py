@@ -21,38 +21,52 @@ def uwb_calculate_coordinates():
     global anchors
     global tag_distances_from_anchors
 
+
+    filtered_dists = {}
+
+    # Filter out distances that are not in the range of 0-2000
+    for k in tag_distances_from_anchors.keys():
+        if tag_distances_from_anchors[k] > 0 and tag_distances_from_anchors[k] < 2000:
+            filtered_dists[k] = tag_distances_from_anchors[k]
+
+    if len(filtered_dists) < 3:
+        return
+    
+    # Sort by distance
+    sorted_dists = sorted(filtered_dists.items(), key=lambda item: item[1])
+
     a_dupe = []
+    distances = []
 
-    for a in anchors:
-        if a['address'] in tag_distances_from_anchors:
-            if tag_distances_from_anchors[a['address']] > 0 and tag_distances_from_anchors[a['address']] < 2000:
-                a_dupe += [a]
-
-
-    dists = np.zeros(len(a_dupe))
     b = 42.36565
     m = 1.46323
+    # Create final anchor and distance array
+    for i in range(len(sorted_dists)):
+        # Get the address and distance from sorted array
+        this_addr = sorted_dists[i][0]
+        this_dist = sorted_dists[i][1] 
+        
+        # Calibration
+        this_dist = (this_dist-b)/m
 
-    for i,a in enumerate(a_dupe):
-        this_dist = tag_distances_from_anchors[a['address']]
-        dists[i] = (this_dist-b)/m
+        # Get anchor corresponding to address
+        this_anchor = next((anchor for anchor in anchors if anchor['address'] == this_addr), None)
 
         # Caluclate height offset
-        dist_sqrt = math.pow(dists[i], 2)
-        height_sqrt = math.pow(a['height'], 2)
+        dist_sqrt = math.pow(this_dist, 2)
+        height_sqrt = math.pow(this_anchor['height'], 2)
 
         if dist_sqrt >= height_sqrt:
-            dists[i] = math.sqrt( dist_sqrt - height_sqrt )
+            distances +=  [math.sqrt( dist_sqrt - height_sqrt )]
+            a_dupe += [this_anchor]
         else:
             print("distance is less than height.  ABORT")
 
-    # sort distances
-    dists = np.sort(dists)
 
-    if len(dists) >= 4:
-        dists = dists[:4]
-    if len(dists) == 3:
-        dists = dists[:3]
+    if len(distances) >= 4:
+        distances = distances[:4]
+    if len(distances) == 3:
+        distances = distances[:3]
     else:
         return
 
@@ -66,9 +80,8 @@ def uwb_calculate_coordinates():
     A_np = A_np[1:,:] 
     A_np = A_np - offset
     
-
     # Math Stuff
-    y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists[1:]**2 + dists[0]**2)
+    y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - distances[1:]**2 + distances[0]**2)
 
     xtemp = np.matmul(linalg.pinv(A_np),y)
     xtemp += offset
