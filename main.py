@@ -80,6 +80,10 @@ def uwb_calculate_coordinates():
     print(distances)
 
     A_np = np.zeros([len(a_dupe),2])
+    dists_np = np.zeros([len(distances),1])
+
+    for i in range(len(distances)):
+        dists_np[i] = distances[i]
 
     for i in range(len(a_dupe)):
         A_np[i,0] = a_dupe[i]['pos_x']
@@ -92,7 +96,7 @@ def uwb_calculate_coordinates():
     print(A_np)
     
     # Math Stuff
-    y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - distances[1:]**2 + distances[0]**2)
+    y = 0.5*(A_np[:,0]**2 + A_np[:,1]**2 - dists_np[1:]**2 + dists_np[0]**2)
 
     xtemp = np.matmul(linalg.pinv(A_np),y)
     xtemp += offset
