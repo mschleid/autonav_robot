@@ -16,20 +16,17 @@ def move(linear: float, angular: float) -> None:
 def stop() -> None:
     global robot
     robot.set_motors(0, 0)
+
+def ramp_up():
+    for i in range(0, 80):
+        move(i/100, 0)
+        time.sleep(0.05)
     
 if __name__ == "__main__":
-    move(0.15, 0.0) # move forward
-    time.sleep(0.5)
-    move(0.35, 0.0) # move forward
-    time.sleep(0.5)
-    move(0.5, 0.0) # move forward
-    time.sleep(0.5)
-    move(0.7, 0.0) # move forward
-    time.sleep(4)
-    move(0.5, 0.0) # move forward
-    time.sleep(0.5)
-    move(0.35, 0.0) # move forward
-    time.sleep(0.5)
+    ramp_up()
+    time.sleep(3)
+    stop()
+    
 
 
     # time.sleep(7)
