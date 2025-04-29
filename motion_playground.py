@@ -20,13 +20,13 @@ def stop() -> None:
 def ramp_up():
     for i in range(0, 80):
         move(i/100, 0)
-        time.sleep(0.05)
+        time.sleep(0.025)
     
 if __name__ == "__main__":
     ramp_up()
     time.sleep(3)
     stop()
-    
+
 
 
     # time.sleep(7)
