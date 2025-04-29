@@ -18,13 +18,27 @@ def stop() -> None:
     robot.set_motors(0, 0)
 
 def ramp_up():
-    for i in range(0, 80):
+    for i in range(0, 81):
         move(i/100, 0)
         time.sleep(0.025)
+
+def ramp_down():
+    for i in range(0, 81):
+        move((80-i)/100, 0)
+        time.sleep(0.025)
+
+def turn_right():
+    move(0.5, -0.3)
+    time.sleep(0.6)
     
 if __name__ == "__main__":
     ramp_up()
-    time.sleep(3)
+    time.sleep(1)
+    turn_right()
+    move(0.8,0)
+    time.sleep(2)
+    ramp_down()
+    time.sleep(0.02)
     stop()
 
 
