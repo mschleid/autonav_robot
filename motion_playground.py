@@ -28,12 +28,12 @@ def ramp_down():
         time.sleep(0.025)
 
 def ramp_down_half():
-    for i in range(40, 81):
+    for i in range(0, 41):
         move((80-i)/100, 0)
         time.sleep(0.025)
 
 def ramp_up_half():
-    for i in range(40, 81):
+    for i in range(0, 41):
         move(i/100, 0)
         time.sleep(0.025)
 
