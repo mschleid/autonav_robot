@@ -188,8 +188,14 @@ if __name__ == "__main__":
     time.sleep(1)
     move(0.5, 0.0)
     time.sleep(1)
+    move(0.5, 90.0)
+    time.sleep(1)
+    move(0.5, 0.0)
+    time.sleep(2)
     move(0.0, 0.0)
     time.sleep(2)
+
+
 
     # init_uwb()
 
