@@ -5,6 +5,8 @@ import requests
 import numpy as np
 from numpy import linalg
 import math
+import subprocess
+
 
 # -------- SECTION --------
 #      UWB Tag/Anchor Communications
@@ -12,6 +14,41 @@ import math
 uwb_tag = UWBTag(port='/dev/ttyTHS1', baudrate=115200, debug=False)
 anchors = []
 tag_distances_from_anchors = {}
+
+# ------- SECTION --------
+#      Motion Controls and ROS stuff
+# -------------------------
+_current_pub_proc = None
+def publish_cmd_vel(x: float, z: float):
+    """
+    Publish to /cmd_vel at 10 Hz with the given linear x and angular z.
+    If a previous publisher is still running, terminate it first.
+    Returns the subprocess.Popen object for the new publisher.
+    """
+    global _current_pub_proc
+
+    # if the old process is still alive, kill it
+    if _current_pub_proc and _current_pub_proc.poll() is None:
+        _current_pub_proc.terminate()
+
+    # build the twist message payload
+    twist = f'{{linear: {{x: {x}}}, angular: {{z: {z}}}}}'
+
+    # source the ROS2 workspace and run the publisher
+    cmd = (
+        f'source ~/jetbot_ws/install.bash && '
+        f'ros2 topic pub -r 10 /cmd_vel geometry_msgs/Twist \'{twist}\''
+    )
+
+    # launch in background (non-blocking)
+    _current_pub_proc = subprocess.Popen(
+        ['bash', '-c', cmd],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+
+    return _current_pub_proc
+
 
 # -------- SECTION --------
 #      UWB Math
@@ -110,7 +147,8 @@ def uwb_calculate_coordinates():
         "pos_x": xpos,
         "pos_y": ypos
     }
-    response = requests.post(url, json=data)
+
+    _ = requests.post(url, json=data)
 
 
 # Callback Functions
@@ -164,16 +202,22 @@ def init_uwb():
     print(anchors)
     
 if __name__ == "__main__":
-    init_uwb()
+    publish_cmd_vel(0.0, 0.0)
+    time.sleep(1)
+    publish_cmd_vel(0.5, 0.0)
+    time.sleep(1)
+    publish_cmd_vel(0.0, 0.0)
+
+    # init_uwb()
 
 
-    try:
-        uwb_tag.start()
+    # try:
+    #     uwb_tag.start()
 
-        while True:
-            time.sleep(0.1)
+    #     while True:
+    #         time.sleep(0.1)
             
-    except KeyboardInterrupt:
-        uwb_tag.stop()
+    # except KeyboardInterrupt:
+    #     uwb_tag.stop()
 
 
