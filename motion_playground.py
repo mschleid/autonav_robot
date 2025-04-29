@@ -33,7 +33,7 @@ def turn_right():
     
 if __name__ == "__main__":
     ramp_up()
-    time.sleep(1)
+    time.sleep(6)
     turn_right()
     move(0.8,0)
     time.sleep(2)
