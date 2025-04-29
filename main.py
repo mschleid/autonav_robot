@@ -6,6 +6,7 @@ import numpy as np
 from numpy import linalg
 import math
 import subprocess
+from jetbot import Robot
 
 
 # -------- SECTION --------
@@ -16,40 +17,22 @@ anchors = []
 tag_distances_from_anchors = {}
 
 # ------- SECTION --------
-#      Motion Controls and ROS stuff
+#      Motion Controls
 # -------------------------
-_current_pub_proc = None
-def publish_cmd_vel(x: float, z: float):
-    """
-    Publish to /cmd_vel at 10 Hz with the given linear x and angular z.
-    If a previous publisher is still running, terminate it first.
-    Returns the subprocess.Popen object for the new publisher.
-    """
-    global _current_pub_proc
+robot = Robot()
 
-    # if the old process is still alive, kill it
-    if _current_pub_proc and _current_pub_proc.poll() is None:
-        _current_pub_proc.terminate()
+def clamp(value: float, min_value: float = -1.0, max_value: float = 1.0) -> float:
+    return max(min_value, min(max_value, value))
 
-    # build the twist message payload
-    twist = f'{{linear: {{x: {x}}}, angular: {{z: {z}}}}}'
+def move(linear: float, angular: float) -> None:
+    left = clamp(linear - angular)
+    right = clamp(linear + angular)
+    uwb_tag.set_motors(left, right)
 
-    # source the ROS2 workspace and run the publisher
-    cmd = (
-        f'source ~/jetbot_ws/install.bash && '
-        f'ros2 topic pub -r 10 /cmd_vel geometry_msgs/Twist \'{twist}\''
-    )
+    left = clamp(linear - angular)
+    right = clamp(linear + angular)
 
-    # launch in background (non-blocking)
-    _current_pub_proc = subprocess.Popen(
-        ['bash', '-c', cmd],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL
-    )
-
-    time.sleep(5)
-
-    return _current_pub_proc
+    robot.set_motors(left, right)
 
 
 # -------- SECTION --------
@@ -204,12 +187,12 @@ def init_uwb():
     print(anchors)
     
 if __name__ == "__main__":
-    publish_cmd_vel(0.0, 0.0)
+    move(0.0, 0.0)
     time.sleep(1)
-    publish_cmd_vel(0.5, 0.0)
+    move(0.5, 0.0)
     time.sleep(1)
-    publish_cmd_vel(0.0, 0.0)
-    time.sleep(15)
+    move(0.0, 0.0)
+    time.sleep(2)
 
     # init_uwb()
 
