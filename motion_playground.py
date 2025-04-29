@@ -27,16 +27,27 @@ def ramp_down():
         move((80-i)/100, 0)
         time.sleep(0.025)
 
+def ramp_down_half():
+    for i in range(40, 81):
+        move((80-i)/100, 0)
+        time.sleep(0.025)
+
+def ramp_up_half():
+    for i in range(40, 81):
+        move(i/100, 0)
+        time.sleep(0.025)
+
 def turn_right():
-    move(0.5, -0.3)
-    time.sleep(0.6)
+    move(0.4, -0.3)
+    time.sleep(0.5)
     
 if __name__ == "__main__":
     ramp_up()
-    time.sleep(4.5)
+    time.sleep(3.8)
+    ramp_down_half()
     turn_right()
     move(0.8,0)
-    time.sleep(2)
+    time.sleep(2.5)
     ramp_down()
     time.sleep(0.02)
     stop()
