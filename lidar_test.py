@@ -1,45 +1,68 @@
 from rplidar import RPLidar
 '''Animates distances and measurment quality'''
 from rplidar import RPLidar
-import matplotlib.pyplot as plt
 import numpy as np
-import matplotlib.animation as animation
 
-PORT_NAME = '/dev/ttyUSB0'
+PORT_NAME = '/dev/ttyUSB0'   # Adjust for your system
 BAUDRATE = 256000
-DMAX = 4000
-IMIN = 0
-IMAX = 50
+DMAX = 12000                         # Max distance in mm
+SCAN_SIZE = 360                     # Number of measurements per scan
+MAP_SIZE_PIXELS = 500
+MAP_SIZE_METERS = 10
+LIDAR_FREQUENCY = 10.0               # Hz
 
-def update_line(num, iterator, line):
+lidar = RPLidar(PORT_NAME, baudrate=BAUDRATE)
+lidar.start_motor()
+
+
+# ------------------- FUNCTION TO GET FULL 360 SCAN -------------------
+def get_full_scan(lidar):
+    iterator = lidar.iter_scans()
+    scan = next(iterator)  # scan is a list of (quality, angle, distance)
+    theta = [t[1] for t in scan]  # extract angles
+    r = [t[2] for t in scan]      # extract distances
+    return theta, r
+            
+def get_scan(iterator):
+    scan_data = [DMAX] * SCAN_SIZE
+    #iterator = lidar.iter_scans()
     scan = next(iterator)
-    offsets = np.array([(np.radians(meas[1]), meas[2]) for meas in scan])
-    line.set_offsets(offsets)
-    intens = np.array([meas[0] for meas in scan])
-    line.set_array(intens)
-    return line,
+    for _,theta,r in scan:
+        index = int(theta) % SCAN_SIZE
+        distance = int(r)
+        scan_data[index] = distance
+    #print(scan_data)
+    return scan_data
+
+def collect_all_scans(iterator, max_frames=None):
+    all_scans = []
+    i = 0
+    for scan in lidar.iter_scans():
+        scan_data = [DMAX] * SCAN_SIZE
+        for _, j, k in scan:
+            index = int(j) % SCAN_SIZE
+            distance = int(k)
+            scan_data[index] = distance
+        all_scans.append(scan_data)
+        print(i)
+        i+=1
+
+    return all_scans
 
 def run():
-    lidar = RPLidar(port=PORT_NAME, baudrate=BAUDRATE)
-    fig = plt.figure()
-    ax = plt.subplot(111, projection='polar')
-    line = ax.scatter([0, 0], [0, 0], s=5, c=[IMIN, IMAX],
-                           cmap=plt.cm.Greys_r, lw=0)
-    ax.set_rmax(DMAX)
-    ax.grid(True)
-    # Remove axis lines, ticks, and labels
-    ax.set_axis_off()          # Removes frame, ticks, and background
+    try:
+        while True:
+            iterator = lidar.iter_scans()
+            scan_data = get_scan(iterator)
+            print(scan_data)
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt: Exiting...")
+    finally:
+        lidar.stop()
+        lidar.stop_motor()
+        lidar.disconnect()
+        print("Disconnected from LIDAR.")
 
-    # Optional: make background white
-    ax.set_facecolor('white')
-
-    iterator = lidar.iter_scans()
-    ani = animation.FuncAnimation(fig, update_line,
-        fargs=(iterator, line), interval=50)
-    plt.show()
-    lidar.stop()
-    lidar.stop_motor()
-    lidar.disconnect()
 
 
 if __name__ == '__main__':
