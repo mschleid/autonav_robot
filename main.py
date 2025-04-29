@@ -47,6 +47,8 @@ def publish_cmd_vel(x: float, z: float):
         stderr=subprocess.DEVNULL
     )
 
+    time.sleep(5)
+
     return _current_pub_proc
 
 
@@ -207,6 +209,7 @@ if __name__ == "__main__":
     publish_cmd_vel(0.5, 0.0)
     time.sleep(1)
     publish_cmd_vel(0.0, 0.0)
+    time.sleep(15)
 
     # init_uwb()
 
