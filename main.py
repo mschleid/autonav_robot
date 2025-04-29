@@ -25,10 +25,7 @@ def clamp(value: float, min_value: float = -1.0, max_value: float = 1.0) -> floa
     return max(min_value, min(max_value, value))
 
 def move(linear: float, angular: float) -> None:
-    left = clamp(linear - angular)
-    right = clamp(linear + angular)
-    uwb_tag.set_motors(left, right)
-
+    global robot
     left = clamp(linear - angular)
     right = clamp(linear + angular)
 
