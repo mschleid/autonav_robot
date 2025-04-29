@@ -39,7 +39,7 @@ def ramp_up_half():
 
 def turn_right():
     move(0.4, -0.3)
-    time.sleep(0.5)
+    time.sleep(0.55)
     
 if __name__ == "__main__":
     ramp_up()
