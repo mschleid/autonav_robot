@@ -1,10 +1,6 @@
-# HOW THIS WORKS:
-# 1. run ipython3
-# 2. within ipython3, enter: run motion_playground.py
-# - within ipython3, use move(linear, angular) to move the robot
-# - within ipython3, use stop() to stop the robot
-
 from jetbot import Robot
+import time
+
 robot = Robot()
 
 def clamp(value: float, min_value: float = -1.0, max_value: float = 1.0) -> float:
@@ -20,5 +16,24 @@ def move(linear: float, angular: float) -> None:
 def stop() -> None:
     global robot
     robot.set_motors(0, 0)
-
     
+if __name__ == "__main__":
+    move(0.15, 0.0) # move forward
+    time.sleep(0.5)
+    move(0.35, 0.0) # move forward
+    time.sleep(0.5)
+    move(0.5, 0.0) # move forward
+    time.sleep(0.5)
+    move(0.7, 0.0) # move forward
+    time.sleep(4)
+    move(0.5, 0.0) # move forward
+    time.sleep(0.5)
+    move(0.35, 0.0) # move forward
+    time.sleep(0.5)
+
+
+    # time.sleep(7)
+    # turn_right()
+    # move(0.7,0.0)
+    # time.sleep(4)
+    stop()
